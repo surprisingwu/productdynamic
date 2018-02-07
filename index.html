@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>产品动态</title>
+    <link rel="stylesheet" href="css/mui.css">
+    <link rel="stylesheet" href="css/cube.min.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/summer.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/mui.js"></script>
+    <script src="js/spring.js"></script>
+    <script src="js/vue/vue.js"></script>
+    <script src="js/vue/vue-router.js"></script>
+    <script src="js/vue/vuex.js"></script>
+    <script src="js/cube.min.js"></script>
+    <script src="js/components/index.js"></script>
+    <script src="js/router/index.js"></script>
+    <script src="js/store/index.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="wrapper">
+            <c-header @turnback="exitApp" @clickright="filterPicker" right-text="筛选">
+            </c-header>
+            <div class="scroll-wrapper">
+                <cube-scroll :data="data" :options="options" @pulling-up="onPullingUp" ref="scroll">
+                    <div class="search-btn-wrapper">
+                        <search-btn @clicksearch="clickSearch"></search-btn>
+                    </div>
+                    <index-list :data="data" @itemclick="toDetail"></index-list>
+                </cube-scroll>
+            </div>
+            <div class="loading-wrapper" v-show="showLoading">
+                <loading></loading>
+            </div>
+            <div class="noresultwrapper" v-show="isNoResult">
+                <no-result text="暂无该类型的数据 !"></no-result>
+            </div>
+            <transition name="slide">
+                <router-view></router-view>
+            </transition>
+        </div>
+    </div>
+</body>
+
+</html>/
