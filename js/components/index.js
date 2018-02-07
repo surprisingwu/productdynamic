@@ -102,7 +102,7 @@ commonComponents.IndexList = {
 commonComponents.MainBody = {
   template:
     '<div class="main-body-wrapper">\
-              <c-header @turnback="turnback" title="正文" @clickright="openAccessory" :right-text="rightText">\
+              <c-header @turnback="turnback" title="正文" @clickright="openAccessory">\
               </c-header>\
               <div class="iframe-wrapper"><iframe class="iframe-content" :src="getSrc"></iframe></div>\
               <transition name="slide">\
