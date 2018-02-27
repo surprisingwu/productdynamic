@@ -102,7 +102,7 @@ commonComponents.IndexList = {
 commonComponents.MainBody = {
   template:
     '<div class="main-body-wrapper">\
-              <c-header @turnback="turnback" title="正文" @clickright="openAccessory">\
+              <c-header @turnback="turnback" title="正文" :rightText="rightText" @clickright="openAccessory">\
               </c-header>\
               <div class="iframe-wrapper"><iframe class="iframe-content" :src="getSrc"></iframe></div>\
               <transition name="slide">\
@@ -243,7 +243,7 @@ commonComponents.SearchPage = {
       <div class="container">\
         <i class="search-icon iconfont icon-search"></i>\
         <input type="text" v-model="inpt" class="inpt" placeholder="请输入关键字" ref="inpt" @click.stop="clickInpt"/>\
-        <i class="iconfont search-delete icon-delete"></i>\
+        <i class="iconfont search-delete icon-delete" @click.stop="deleteHandler"></i>\
       </div>\
     </div>\
     <span class="search-text" @click.stop="searchHandler">搜索</span>\
@@ -283,6 +283,10 @@ commonComponents.SearchPage = {
   methods: {
     clickInpt: function() {
       this.$refs.inpt.focus()
+    },
+    deleteHandler: function(){
+      this.inpt = ''
+      this.data = []
     },
     getData: function(inpt) {
       _.getData(
@@ -341,6 +345,9 @@ commonComponents.SearchPage = {
       // 函数节流
       this.isNoResult = false
       this.data = []
+      if (!newVal) {
+        return
+      }
       if (this.timer) {
         clearTimeout(this.timer)
       }

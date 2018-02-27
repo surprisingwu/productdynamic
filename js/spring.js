@@ -745,7 +745,7 @@
   if (!noGlobal) {
     return (window._ = _)
   }
-  return _
+  return _  // IFBP
 })
 
 
