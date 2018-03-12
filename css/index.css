@@ -80,14 +80,12 @@ header .filter {
 
 /* loading的样式 */
 
-.loading {
+.p-loading {
+    display: flex;
+    height: 100%;
     width: 100%;
-    text-align: center;
-}
-
-.loading p.desc {
-    font-size: 15px;
-    color: #666;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -223,10 +221,11 @@ header .filter {
 }
 
 .loading-wrapper {
-    position: absolute;
-    top: 200px;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
 }
 
 .iframe-wrapper {
@@ -394,69 +393,91 @@ header .filter {
     color: #CCC;
 }
 
-.type-file {
+.accessory-item .type-file {
     background-image: url(../img/file@2x.png);
 }
 
-.type-doc {
+.accessory-item .type-doc {
     background-image: url(../img/doc@2x.png);
 }
 
-.type-txt {
+.accessory-item .type-txt {
     background-image: url(../img/txt@2x.png);
 }
 
-.type-xls {
+.accessory-item .type-xls {
     background-image: url(../img/xls@2x.png);
 }
 
-.type-pdf {
+.accessory-item .type-pdf {
     background-image: url(../img/pdf@2x.png);
 }
 
-.type-ppt {
+.accessory-item .type-ppt {
     background-image: url(../img/ppt@2x.png);
 }
 
-.type-jpg {
+.accessory-item .type-jpg {
     background-image: url(../img/jpg@2x.png);
 }
 
-.type-png {
+.accessory-item .type-png {
     background-image: url(../img/png@2x.png);
 }
 
-.type-other {
+.accessory-item .type-other {
     background-image: url(../img/other@2x.png);
+}
+
+.null-file-wrapper {
+    position: fixed;
+    top: 44px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 100px;
+}
+
+.null-file-wrapper .content {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background-image: url(../img/null@2x.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 200px 200px;
 }
 
 @media (-webkit-min-device-pixel-ratio: 3),
 (min-device-pixel-ratio: 3) {
-    .type-file {
+    .null-file-wrapper .content {
+        background-image: url(../img/null@3x.png);
+    }
+    .accessory-item .type-file {
         background-image: url(../img/file@3x.png);
     }
-    .type-doc {
+    .accessory-item .type-doc {
         background-image: url(../img/doc@3x.png);
     }
-    .type-txt {
+    .accessory-item .type-txt {
         background-image: url(../img/txt@3x.png);
     }
-    .type-xls {
+    .accessory-item .type-xls {
         background-image: url(../img/xls@3x.png);
     }
-    .type-pdf {
+    .accessory-item .type-pdf {
         background-image: url(../img/pdf@3x.png);
     }
-    .type-ppt {
+    .accessory-item .type-ppt {
         background-image: url(../img/ppt@3x.png);
     }
-    .type-jpg {
+    .accessory-item .type-jpg {
         background-image: url(../img/jpg@3x.png);
     }
-    .type-png {
+    .accessory-item .type-png {
         background-image: url(../img/png@3x.png);
     }
-    .type-other {
+    .accessory-item .type-other {
         background-image: url(../img/other@3x.png);
     }
 }

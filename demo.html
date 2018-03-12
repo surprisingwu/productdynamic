@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/cube.min.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/newindex.css">
+    <script src="js/summer.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/spring.js"></script>
+    <script src="js/vue/vue.js"></script>
+    <script src="js/vue/vue-router.js"></script>
+    <script src="js/vue/vuex.js"></script>
+    <script src="js/cube.min.js"></script>
+    <script src="js/components/index.js"></script>
+    <script src="js/router/index.js"></script>
+    <script src="js/store/index.js"></script>
+    <script src="js/newindex.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="wrapper">
+            <c-header @turnback="exitApp" @clickright="goToSearch" right-text="搜索">
+            </c-header>
+            <div class="scroll-wrapper bg-fff">
+                <cube-scroll :data="items">
+                    <div class="m-slide-wrapper">
+                        <cube-slide ref="slide" :data="items" @change="changePage" :auto-play="true">
+                            <cube-slide-item v-for="(item, index) in items" :key="index">
+                                <div class="m-slide-img-wrapepr">
+                                    <img :src="item.image" width="100%" height="100%">
+                                    <span v-show="item.text" class="m-slide-text">{{item.text}}</span>
+                                </div>
+                            </cube-slide-item>
+                            <template slot="dots" slot-scope="props">
+                                <div class="m-slide-dots-wrapper" ref="slideDotsWrapper">
+                                <span class="m-slide-dot" 
+                                    :class="{active: props.current === index}"
+                                    v-for="(item, index) in props.dots"
+                                    :style="{width: (((index+1)/props.dots.length).toFixed(2))*100+'%'}"
+                                    ></span>
+                                </div>                     
+                              </template>
+                        </cube-slide>
+                    </div>
+                    <div class="slide-nav-wrapper">
+                        <cube-scroll :data="items"  :direction ='horizontal' :options="options" ref="navScroll">                  
+                                <ul class="slide-nav-list" ref="slideNavList">
+                                <li class="slide-nav-item" v-for="(item,i) in tabs" @click.stop="changeTab(i)">
+                                    <span class="text" :class="{active: i === currentIndex}">{{item}}</span>
+                                </li>
+                            </ul>
+                        </cube-scroll>
+                    </div>
+                    <div class="m-list-wrapper">
+                    <graphic-list :data="listData"></graphic-list> 
+                    </div>
+                </cube-scroll>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
