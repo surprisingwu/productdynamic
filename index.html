@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
     <meta charset="UTF-8">
-    <title>产品动态</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link rel="stylesheet" href="css/mui.css">
     <link rel="stylesheet" href="css/cube.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/newindex.css">
     <script src="js/summer.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/mui.js"></script>
@@ -20,23 +22,56 @@
     <script src="js/components/index.js"></script>
     <script src="js/router/index.js"></script>
     <script src="js/store/index.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/newindex.js"></script>
 </head>
 
 <body>
     <div id="app">
         <div class="wrapper">
-            <c-header @turnback="exitApp" @clickright="filterPicker" right-text="筛选">
+            <c-header @turnback="exitApp" @clickright="goToSearch" right-text="搜索">
             </c-header>
-            <div class="scroll-wrapper">
-                <cube-scroll :data="data" :options="options" @pulling-up="onPullingUp" ref="scroll">
-                    <div class="search-btn-wrapper">
-                        <search-btn @clicksearch="clickSearch"></search-btn>
+            <div class="scroll-wrapper bg-fff">
+                <cube-scroll :data="listData" :options="options" @pulling-up="onPullingUp" ref="scroll">
+                    <div class="m-slide-wrapper">
+                        <cube-slide ref="slide" :data="imgData" @change="changeImg" :auto-play="true">
+                            <cube-slide-item v-for="(item, index) in imgData" :key="index" :dispatchid='item.dispatch_id' @click.native="goToImgDetail(item)">
+                                <div class="m-slide-img-wrapepr">
+                                    <img :src="item.pic_url" width="100%" height="100%">
+                                    <span v-show="item.title" class="m-slide-text">{{item.title}}</span>
+                                </div>
+                            </cube-slide-item>
+                            <template slot="dots" slot-scope="props">
+                                <div class="m-slide-dots-wrapper" ref="slideDotsWrapper">
+                                <span class="m-slide-dot" 
+                                    :class="{active: props.current === index}"
+                                    v-for="(item, index) in props.dots"
+                                    :style="{width: (((index+1)/props.dots.length).toFixed(2))*100+'%'}"
+                                    ></span>
+                                </div>                     
+                              </template>
+                        </cube-slide>
                     </div>
-                    <index-list :data="data" @itemclick="toDetail"></index-list>
+                    <div class="slide-nav-wrapper">
+                        <cube-scroll :data="listData" direction='horizontal' :options="tabOptions" ref="navScroll">
+                            <ul class="slide-nav-list" ref="slideNavList">
+                                <li class="slide-nav-item" v-for="(item,i) in tabs" @click.stop="changeTab(i,$event)">
+                                    <span class="text" :class="{active: i === currentIndex}">{{item.typename}}</span>
+                                </li>
+                            </ul>
+                        </cube-scroll>
+                    </div>
+                    <div class="m-list-wrapper">
+                        <graphic-list :data="listData" @itemClick="goToDetail"></graphic-list>
+                    </div>
+                    <div class="m-loading-wrapepr" v-show="isShowLoading">
+                        <loading></loading>
+                    </div>
+                    <div class="no-data-img-wrapper" v-show="isShowNoDataImg">
+                        <no-data></no-data>
+                    </div>
                 </cube-scroll>
             </div>
-            <div class="loading-wrapper" v-show="showLoading">
+            <div class="global-loading-wrapepr" v-show="isShowGlobalLoading">
                 <loading></loading>
             </div>
             <div class="noresultwrapper" v-show="isNoResult">
@@ -49,4 +84,4 @@
     </div>
 </body>
 
-</html>/
+</html>

@@ -54,8 +54,10 @@ span.m-slide-text {
     background-color: #BB0000;
 }
 
+
 /* 滚动tan栏的样式 */
-.slide-nav-wrapper{
+
+.slide-nav-wrapper {
     margin-top: 3px;
     height: 44px;
     width: 100%;
@@ -63,67 +65,105 @@ span.m-slide-text {
     box-sizing: border-box;
     border-bottom: 1px solid #EFEFEF;
 }
-.slide-nav-list{
+
+.slide-nav-list {
     height: 100%;
     overflow-x: auto;
     white-space: nowrap;
 }
+
 .slide-nav-item {
     display: inline-block;
-    padding: 0 20px;
+    padding: 0 14px;
     height: 100%;
     font-size: 14px;
     color: #8F8F8F;
 }
-.slide-nav-item .text{
+
+.slide-nav-item .text {
     display: inline-block;
     padding: 0 5px;
     line-height: 42px;
     height: 100%;
     box-sizing: border-box
 }
-.slide-nav-item .active{
+
+.slide-nav-item .active {
     color: #ED5F58;
     border-bottom: 2px solid #ED5F58;
 }
 
+
 /* 图文列表的样式 */
-.graphic-list{
+
+.graphic-list {
     padding: 0 15px;
 }
-.graphic-list-item{
+
+.graphic-list-item {
     display: flex;
     display: -webkit-flex;
     padding: 15px 0;
-    border-bottom:  1px solid #EFEFEF;
+    border-bottom: 1px solid #EFEFEF;
     box-sizing: border-box;
 }
-.graphic-list-item .content{
+
+.graphic-list-item .content {
     flex: 1;
     -webkit-flex: 1;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
     padding-right: 15px;
 }
-.graphic-list-item .content .title{
+
+.graphic-list-item .content .title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-height: 28px;
     overflow: hidden;
-    font-size: 20px;
+    font-size: 18px;
 }
+
 .graphic-list-item .content .subtitle {
     display: inline-block;
     margin-top: 7px;
     font-size: 14px;
     color: #8F8F8F;
 }
-.graphic-list-item .img{
+
+.graphic-list-item .img {
     flex: 0 0 120px;
     -webkit-flex: 0 0 120px;
     width: 120px;
     height: 78px;
 }
+
+
+/* 其他组件的一些样式 */
+
+.m-loading-wrapepr {
+    position: absolute;
+    top: 350px;
+    left: 0;
+    right: 0;
+}
+
+.global-loading-wrapepr {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 12;
+    background-color: #fff;
+}
+
+
 /* .graphic-list-item::last-child{
     border-bottom: none;
 } */
-

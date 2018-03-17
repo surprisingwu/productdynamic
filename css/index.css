@@ -185,6 +185,16 @@ header .filter {
     transform: translateX(100%)
 }
 
+.change-tab-enter-active,
+.change-tab-leave-active {
+    transition: all 0.3s;
+}
+
+.change-tab-enter,
+.change-tab-leave-to {
+    transform: translateX(100%)
+}
+
 
 /* 页面的样式 */
 
@@ -253,14 +263,11 @@ header .filter {
     right: 0;
     bottom: 0;
     z-index: 2;
+    overflow: hidden;
     background-color: #efeff4;
 }
 
 .search-inpt-wrapper {
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    -webkit-align-items: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -271,66 +278,72 @@ header .filter {
     border-bottom: 1px solid #F7F7F7;
 }
 
-.search-inpt-wrapper .back {
-    padding-right: 15px;
-    padding-left: 12px;
-}
-
-.search-inpt-wrapper .search-content {
-    flex: 1;
-    -webkit-flex: 1;
-    padding: 8px 0;
+.search-inpt-wrapper .input-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     height: 100%;
 }
 
-.search-inpt-wrapper .search-content .container {
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    -webkit-align-items: center;
-    justify-content: center;
-    -webkit-justify-content: center;
+.search-inpt-wrapper span.cancel-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 62px;
     height: 100%;
-    background-color: #F6F6F6;
-    line-height: 27px;
-    border-radius: 10px;
-}
-
-.search-inpt-wrapper .search-content .container .search-icon {
-    width: 30px;
-    height: 100%;
+    line-height: 43px;
     text-align: center;
-    color: #D0D0D0;
+    font-size: 16px;
+    color: #000;
 }
 
-.search-inpt-wrapper .search-content .container .inpt {
-    flex: 1;
-    -webkit-flex: 1;
-    margin-bottom: 0;
-    padding: 0;
+.search-inpt-wrapper .input-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 8px 62px 8px 13px;
+}
+
+.search-inpt-wrapper .input-wrapper input {
+    margin: 0;
+    padding: 0 30px;
+    width: 100%;
+    height: 100%;
     border: none;
-    height: 100%;
+    border-radius: 14px;
     font-size: 14px;
-    color: #333;
+    color: #000;
     background-color: #F6F6F6;
 }
 
-.search-inpt-wrapper .search-content .container .inpt::placeholder {
-    color: #999;
+.search-inpt-wrapper .input-wrapper input::placeholder {
+    color: #8F8F94;
 }
 
-.search-inpt-wrapper .search-content .container .search-delete {
+.search-inpt-wrapper i.search-icon {
+    position: absolute;
+    left: 13px;
+    top: 8px;
     width: 30px;
     height: 100%;
     text-align: center;
-    font-size: 20px;
+    line-height: 27px;
+    font-size: 15px;
     color: #D0D0D0;
 }
 
-.search-inpt-wrapper .search-text {
-    padding: 0 15px;
+.search-inpt-wrapper i.delete {
+    position: absolute;
+    right: 62px;
+    top: 8px;
+    width: 30px;
+    height: 100%;
+    text-align: center;
+    line-height: 27px;
     font-size: 15px;
-    color: #333;
+    color: #D0D0D0;
 }
 
 .noresultwrapper {
@@ -448,8 +461,21 @@ header .filter {
     background-size: 200px 200px;
 }
 
+.no-data-img {
+    width: 200px;
+    height: 200px;
+    margin: 50px auto;
+    background-image: url(../img/nodata@2x.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 150px;
+}
+
 @media (-webkit-min-device-pixel-ratio: 3),
 (min-device-pixel-ratio: 3) {
+    .no-data-img {
+        background-image: url(../img/nodata@3x.png);
+    }
     .null-file-wrapper .content {
         background-image: url(../img/null@3x.png);
     }
@@ -480,4 +506,13 @@ header .filter {
     .accessory-item .type-other {
         background-image: url(../img/other@3x.png);
     }
+}
+
+.search-loading-wrapepr {
+    position: fixed;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 12;
 }

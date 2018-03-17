@@ -11,7 +11,7 @@ commonComponents.CHeader = {
     props: {
         title: {
             type: String,
-            default: '产品动态'
+            default: '公司动态'
         },
         rightText: {
             type: String,
@@ -27,7 +27,9 @@ commonComponents.CHeader = {
         }
     }
 }
-
+commonComponents.NoData = {
+    template: '<div class="no-data-img"></div>',
+}
 commonComponents.Loading = {
     template: '<div class="p-loading">\
             <cube-loading :size="28"></cube-loading>\
@@ -35,20 +37,36 @@ commonComponents.Loading = {
 }
 commonComponents.graphicList = {
     template: '<div class="graphic-list-wrapper">\
+    <transition name="change-tab">\
                 <ul class="graphic-list">\
-                    <li class="graphic-list-item" v-for="(item,i) in data" :key="i">\
+                    <li class="graphic-list-item" v-for="(item,i) in data" :key="i" @click="itemClick(i)">\
                         <div class="content">\
                             <h2 class="title">{{item.title}}</h2>\
-                            <span class="subtitle">{{item.subtitle}}</span>\
+                            <span class="subtitle">{{item.summary}}</span>\
                         </div>\
-                        <img class="img" width="120" height="78" :src="item.url"/>\
+                        <img class="img" width="120" height="78" :src="item.pic_url"/>\
                     </li>\
                 </ul>\
+                </transition>\
     </div>',
     props: {
         data: {
             type: Array,
-            default: []
+            default: function() {
+                return []
+            }
+        }
+    },
+    methods: {
+        formatTime: function(time) {
+            if (!time) {
+                return
+            }
+            return _.formatDate(new Date(Number(time)), 'yyyy-MM-dd hh:ss')
+        },
+        itemClick: function(i) {
+            _.setStorage('dispatch_id', this.data[i].dispatch_id)
+            this.$emit('itemclick', i)
         }
     }
 }
@@ -61,22 +79,9 @@ commonComponents.NoResult = {
         }
     }
 }
-commonComponents.SearchBtn = {
-    template: '<div class="searchbtn" @click.stop="clickSearch">\
-    <div class="content"><i class="mui-icon mui-icon-search serach-icon"></i><span class="text">搜索</span></div>\
-  </div>',
-    methods: {
-        clickSearch: function() {
-            if (!event._constructed) {
-                return
-            }
-            this.$emit('clicksearch')
-        }
-    }
-}
 commonComponents.IndexList = {
     template: '<ul class="indexlist">\
-      <li class="list-item" v-for="(item,index) in data" :key="index" @click.stop="itemClick(index)">\
+      <li class="list-item" v-for="(item,index) in data" :key="index" @click.stop="itemClick(index,$event)">\
       <img :src="item.pic_url"/>\
       <div class="content">\
         <h2 class="title">{{item.title}}</h2>\
@@ -100,7 +105,10 @@ commonComponents.IndexList = {
             }
             return _.formatDate(new Date(Number(time)), 'yyyy-MM-dd hh:ss')
         },
-        itemClick: function(i) {
+        itemClick: function(i, event) {
+            if (!event._constructed) {
+                return
+            }
             _.setStorage('dispatch_id', this.data[i].dispatch_id)
             this.$emit('itemclick', i)
         }
@@ -245,15 +253,13 @@ commonComponents.AccessoryPage = {
 commonComponents.SearchPage = {
     template: '<div class="search-page-wrapper">\
     <div class="search-inpt-wrapper">\
-    <i class="iconfont icon-arrow-left back" @click.stop="turnBack"></i>\
-    <div class="search-content">\
-      <div class="container">\
-        <i class="search-icon iconfont icon-search"></i>\
-        <input type="text" v-model="inpt" class="inpt" placeholder="请输入关键字" ref="inpt" @click.stop="clickInpt"/>\
-        <i class="iconfont search-delete icon-delete" @click.stop="deleteHandler"></i>\
-      </div>\
-    </div>\
-    <span class="search-text" @click.stop="searchHandler">搜索</span>\
+    <div class="input-wrapper">\
+    <div class="input-content">\
+      <input placeholder="请输入关键字" type="text" @click.stop="clickInpt" v-model="inpt" ref="inpt"/>\
+      <i class="search-icon iconfont icon-search"></i>\
+      <i class="iconfont icon-delete delete" @click.stop="deleteHandler"></i>\
+      </div></div>\
+   <span class="cancel-btn" @click.stop="turnBack">取消</span>\
     </div>\
     <div class="scroll-wrapper">\
       <cube-scroll :data="data" :options="options" @pulling-up="onPullingUp" ref="scroll">\
@@ -261,12 +267,14 @@ commonComponents.SearchPage = {
       </cube-scroll>\
     </div>\
     <div class="noresultwrapper" v-show="isNoResult"><no-result></no-result></div>\
+    <div class="search-loading-wrapepr" v-show="isShowLoading"><loading></loading></div>\
     <router-view></router-view>\
   </div>',
     data: function() {
         return {
             inpt: '',
             data: [],
+            isShowLoading: false,
             isNoResult: false,
             pageIndex: 1,
             options: {
@@ -311,6 +319,7 @@ commonComponents.SearchPage = {
             )
         },
         callback: function(data) {
+            this.isShowLoading = false
             data = data.result.data
             if (data.length === 0) {
                 this.isNoResult = true
@@ -322,6 +331,7 @@ commonComponents.SearchPage = {
             }
         },
         callerr: function(err) {
+            this.isShowLoading = false
             mui.alert('网络异常,请稍候重试 !')
         },
         toDetail: function(i) {
@@ -340,10 +350,6 @@ commonComponents.SearchPage = {
         },
         turnBack: function() {
             this.$router.back()
-        },
-        searchHandler: function() {
-            this.$refs.inpt.blur()
-            this.getData(this.inpt)
         }
     },
     watch: {
@@ -351,21 +357,23 @@ commonComponents.SearchPage = {
             // 函数节流
             this.isNoResult = false
             this.data = []
-            if (!newVal) {
-                return
-            }
+
             if (this.timer) {
                 clearTimeout(this.timer)
             }
-
+            if (!newVal) {
+                return
+            }
             var that = this
             this.timer = setTimeout(function() {
+                that.isShowLoading = true
                 that.getData(newVal)
             }, 300)
         }
     },
     components: {
         IndexList: commonComponents.IndexList,
-        NoResult: commonComponents.NoResult
+        NoResult: commonComponents.NoResult,
+        Loading: commonComponents.Loading,
     }
 }
